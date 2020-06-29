@@ -29,6 +29,7 @@ namespace ClientWorker
                 string ip = "Não conectado";
                 string versaoNet = GetNetVersion();
                 string versaoWindows = VersaoWindows();
+                string antivirus = NomeAntivirus();
                 bool conectado = System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
                 if (conectado)
                 {
@@ -125,15 +126,16 @@ namespace ClientWorker
             }
         }
 
-        private List<string> NomeAntivirus()
+        private string NomeAntivirus()
         {
             ManagementObjectSearcher wmiData = new ManagementObjectSearcher(@"root\SecurityCenter2", "SELECT * FROM AntiVirusProduct");
             ManagementObjectCollection data = wmiData.Get();
-            var retorno = new List<string>();
+            string retorno;
             foreach(ManagementObject management in data)
             {
-
+                retorno=management["displayName"].ToString();                
             }
+            return retorno;
         }
 
     }
