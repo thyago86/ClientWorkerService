@@ -26,19 +26,17 @@ namespace ClientWorker
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                string nomeMaquina = Environment.MachineName;
+                string nomeMaquina ="Nome da máquina: " + Environment.MachineName;
                 string ip = "Não conectado";
-                string versaoNet = GetNetVersion();
-                string versaoWindows = VersaoWindows();
-                string antivirus = NomeAntivirus();
-                bool firewall = GetFirewallActivated();
+                string versaoNet ="Versão do .NET: " + GetNetVersion();
+                string versaoWindows ="Versão do Windows: " + VersaoWindows();
+                string antivirus ="Nome do Antivírus: " + NomeAntivirus();
+                string firewall = GetFirewallActivated();
                 bool conectado = System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
                 if (conectado)
                 {
                     ip = GetLocalIPAddress();
                 }
-
-
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(1000, stoppingToken);
             }
@@ -162,7 +160,7 @@ namespace ClientWorker
             }
         }
 
-        private static bool GetFirewallActivated()
+        private static string GetFirewallActivated()
         {
 
             try
@@ -181,13 +179,15 @@ namespace ClientWorker
 
                 tpNetFirewall = null;
 
-                return blnEnabled;
+                if(blnEnabled)
+                    return "Firewall ativo";
+                return "Firewall inativo";
 
             }
             catch (Exception e)
             {
 
-                return false;
+                return "";
 
             }
         }
