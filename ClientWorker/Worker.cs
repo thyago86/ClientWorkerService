@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Management;
 using System.Net;
 using System.Net.Sockets;
@@ -8,7 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.TeamFoundation.Common;
 using Microsoft.Win32;
+using NetFwTypeLib;
 
 namespace ClientWorker
 {
@@ -30,12 +31,13 @@ namespace ClientWorker
                 string versaoNet = GetNetVersion();
                 string versaoWindows = VersaoWindows();
                 string antivirus = NomeAntivirus();
+                bool firewall = GetFirewallActivated();
                 bool conectado = System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
                 if (conectado)
                 {
                     ip = GetLocalIPAddress();
                 }
-                bool firewall = GetFirewallActivated();
+
 
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(1000, stoppingToken);
@@ -55,12 +57,7 @@ namespace ClientWorker
             throw new Exception("No network adapters with an IPv4 address in the system!");
         }
 
-        private static bool GetFirewallActivated()
-        {
-            Type FWManagerType = Type.GetTypeFromProgID("HNetCfg.FwMgr");
-            dynamic FWManager = Activator.CreateInstance(FWManagerType);
-            return FWManager.LocalPolicy.CurrentProfile.FirewallEnabled;
-        }
+
 
         private static string GetNetVersion()
         {
@@ -130,12 +127,69 @@ namespace ClientWorker
         {
             ManagementObjectSearcher wmiData = new ManagementObjectSearcher(@"root\SecurityCenter2", "SELECT * FROM AntiVirusProduct");
             ManagementObjectCollection data = wmiData.Get();
-            string retorno;
-            foreach(ManagementObject management in data)
+            string retorno = "";
+            foreach (ManagementObject management in data)
             {
-                retorno=management["displayName"].ToString();                
+                retorno = management["displayName"].ToString();
             }
             return retorno;
+        }
+
+        private static void EspacoLivre()
+        {
+            DriveInfo[] allDrives = DriveInfo.GetDrives();
+
+            foreach (DriveInfo d in allDrives)
+            {
+                Console.WriteLine("Drive {0}", d.Name);
+                Console.WriteLine("  Drive type: {0}", d.DriveType);
+                if (d.IsReady == true)
+                {
+                    Console.WriteLine("  Volume label: {0}", d.VolumeLabel);
+                    Console.WriteLine("  File system: {0}", d.DriveFormat);
+                    Console.WriteLine(
+                        "  Available space to current user:{0, 15} bytes",
+                        d.AvailableFreeSpace);
+
+                    Console.WriteLine(
+                        "  Total available space:          {0, 15} bytes",
+                        d.TotalFreeSpace);
+
+                    Console.WriteLine(
+                        "  Total size of drive:            {0, 15} bytes ",
+                        d.TotalSize);
+                }
+            }
+        }
+
+        private static bool GetFirewallActivated()
+        {
+
+            try
+            {
+
+                Type tpNetFirewall = Type.GetTypeFromProgID
+                   ("HNetCfg.FwMgr", false);
+
+                INetFwMgr mgrInstance = (INetFwMgr)Activator
+                   .CreateInstance(tpNetFirewall);
+
+                bool blnEnabled = mgrInstance.LocalPolicy
+                   .CurrentProfile.FirewallEnabled;
+
+                mgrInstance = null;
+
+                tpNetFirewall = null;
+
+                return blnEnabled;
+
+            }
+            catch (Exception e)
+            {
+
+                return false;
+
+            }
         }
 
     }
