@@ -1,5 +1,9 @@
-﻿using System;
+﻿using ClientWorker.ViewModel;
+using ServiceStack.Text;
+using System;
 using System.Net;
+using System.Net.Sockets;
+using System.Text;
 
 namespace WebApp
 {
@@ -8,14 +12,26 @@ namespace WebApp
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            
+            BroadcastToWorker();
         }
 
-        public void PrintBroadcastAddress()
+        public static void BroadcastToWorker()
         {
-            // Get the IP Broadcast address and convert it to string.
-            string ipAddressString = IPAddress.Broadcast.ToString();
-            Console.WriteLine("Broadcast IP address: {0}", ipAddressString);
+            var Client = new UdpClient();
+            var RequestData = Encoding.ASCII.GetBytes("SomeRequestData");
+            var ServerEp = new IPEndPoint(IPAddress.Any, 0);
+
+            Client.EnableBroadcast = true;
+            Client.Send(RequestData, RequestData.Length, new IPEndPoint(IPAddress.Broadcast, 8888));
+
+            var ServerResponseData = Client.Receive(ref ServerEp);
+            var ServerResponse = Encoding.UTF8.GetString(ServerResponseData);
+            var printmensagem = JsonSerializer.DeserializeFromString<InformationSent>(ServerResponse);
+            Console.WriteLine("Recived {0} from {1}", ServerResponse, ServerEp.Address.ToString());
+
+            Client.Close();
         }
+
+        
     }
 }

@@ -157,16 +157,16 @@ namespace ClientWorker.Getters
         public static InformationSent RetornaInformacoes()
         {            
             List<HDDInformation> hDDInformation = InformacaoDrivers();
-            string nomeMaquina = "Nome da máquina: " + Environment.MachineName;
+            string nomeMaquina = Environment.MachineName;
             string ip = "Não conectado";
             string versaoNet = GetNetVersion();
-            string versaoWindows = "Versão do Windows: " + VersaoWindows();
-            string antivirus = "Nome do Antivírus: " + NomeAntivirus();
+            string versaoWindows = VersaoWindows();
+            string antivirus = NomeAntivirus();
             string firewall = InformacaoFirewall();
             bool conectado = System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
             if (conectado)
             {
-                ip = "Endereço de IP: " + GetLocalIPAddress();
+                ip = GetLocalIPAddress();
             }
             InformationSent informationSent = new InformationSent(nomeMaquina, versaoNet, versaoWindows, antivirus, firewall, ip, hDDInformation);
             return informationSent;
