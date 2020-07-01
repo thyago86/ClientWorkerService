@@ -32,7 +32,7 @@ namespace WebApp
 
             var ServerResponseData = client.Receive(ref ServerEp);
             var ServerResponse = Encoding.UTF8.GetString(ServerResponseData);
-            var printmensagem = JsonSerializer.DeserializeFromString<InformationSent>(ServerResponse);
+            
             Console.WriteLine("Worker Service do ip {1} respondeu: {0}", ServerResponse, ServerEp.Address.ToString());
         }
 

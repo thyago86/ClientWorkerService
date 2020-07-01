@@ -53,11 +53,12 @@ namespace ClientWorker
                 {
                     //executar powershell
                     PowerShellManager.PowerShellExecuter(ClientRequest);
-                    var resposta = "comando executado";
+                    _logger.LogInformation(ClientRequest);
+                    var resposta = "comando executado";                    
                     ResponseData = Encoding.ASCII.GetBytes(resposta);
                 }
                 Server.Send(ResponseData, ResponseData.Length, ClientEp);
-
+                
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
                 await Task.Delay(1000, stoppingToken);
