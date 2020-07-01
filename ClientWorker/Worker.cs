@@ -41,11 +41,9 @@ namespace ClientWorker
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                //ao iniciar, aplicação deve se registrar ao serviço web e informar a ela essas informações
-                //o service que busca o web app e manda informações do PC que está instalado
+                
                 var Server = new UdpClient(8888);
                 var ResponseData = Encoding.UTF8.GetBytes(_mensagem);
-
 
                 var ClientEp = new IPEndPoint(IPAddress.Any, 0);
                 var ClientRequestData = Server.Receive(ref ClientEp);
@@ -56,7 +54,7 @@ namespace ClientWorker
 
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
-                await Task.Delay(60 * 1000, stoppingToken);
+                await Task.Delay(1000, stoppingToken);
             }
         }
 
