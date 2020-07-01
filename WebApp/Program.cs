@@ -11,6 +11,7 @@ namespace WebApp
     {
         static void Main(string[] args)
         {
+            System.Threading.Thread.Sleep(2000);
             Console.WriteLine("Iniciando Terminal");            
             var Client = new UdpClient();
             WorkerManager.ConectarAoWorker(Client);

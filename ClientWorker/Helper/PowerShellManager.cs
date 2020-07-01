@@ -29,12 +29,10 @@ namespace ClientWorker.Helper
                 // this could be sleep/wait, or perhaps some other work
                 while (result.IsCompleted == false)
                 {
-                    Console.WriteLine("Waiting for pipeline to finish...");
-                    Thread.Sleep(1000);
+
+                    Thread.Sleep(500);
                     // might want to place a timeout here...
                 }
-                                
-                Console.WriteLine("Finished!");
             }
         }
     }

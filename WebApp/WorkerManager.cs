@@ -34,8 +34,8 @@ namespace WebApp
             client.Send(comando, comando.Length, new IPEndPoint(IPAddress.Broadcast, 8888));
             var ServerResponseData = client.Receive(ref ServerEp);
             var ServerResponse = Encoding.UTF8.GetString(ServerResponseData);
-            var printmensagem = JsonSerializer.DeserializeFromString<InformationSent>(ServerResponse);
-            Console.WriteLine("{0}", printmensagem);
+            
+            Console.WriteLine(ServerResponse);
             client.Close();
         }
     }
