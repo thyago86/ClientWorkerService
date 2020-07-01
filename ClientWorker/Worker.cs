@@ -33,13 +33,13 @@ namespace ClientWorker
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             
-            
+            informationSent = InformationGetter.RetornaInformacoes();
             return base.StartAsync(cancellationToken);
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)
         {
-            
+            //byte[] bytes = Encoding.UTF8.GetBytes(informationSent);
             _logger.LogInformation("Serviço foi parado.");
             return base.StopAsync(cancellationToken);
         }
