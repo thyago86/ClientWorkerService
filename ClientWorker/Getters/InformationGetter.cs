@@ -153,5 +153,23 @@ namespace ClientWorker.Getters
 
             }
         }
+
+        public static InformationSent RetornaInformacoes()
+        {            
+            List<HDDInformation> hDDInformation = InformacaoDrivers();
+            string nomeMaquina = "Nome da máquina: " + Environment.MachineName;
+            string ip = "Não conectado";
+            string versaoNet = InformationGetter.GetNetVersion();
+            string versaoWindows = "Versão do Windows: " + InformationGetter.VersaoWindows();
+            string antivirus = "Nome do Antivírus: " + InformationGetter.NomeAntivirus();
+            string firewall = InformationGetter.InformacaoFirewall();
+            bool conectado = System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
+            if (conectado)
+            {
+                ip = "Endereço de IP: " + InformationGetter.GetLocalIPAddress();
+            }
+            InformationSent informationSent = new InformationSent(nomeMaquina, versaoNet, versaoWindows, antivirus, firewall, ip, hDDInformation);
+            return informationSent;
+        }
     }
 }
