@@ -31,7 +31,6 @@ namespace ClientWorker.Helper
                 {
                     Console.WriteLine("Waiting for pipeline to finish...");
                     Thread.Sleep(1000);
-
                     // might want to place a timeout here...
                 }
                                 
