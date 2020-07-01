@@ -24,7 +24,7 @@ namespace WebApp
         public static void ConectarAoWorker(UdpClient client)
         {
             
-            var RequestData = Encoding.UTF8.GetBytes("SomeRequestData");
+            var RequestData = Encoding.UTF8.GetBytes("");
             var ServerEp = new IPEndPoint(IPAddress.Any, 0);
 
             client.EnableBroadcast = true;
