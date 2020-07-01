@@ -16,14 +16,13 @@ namespace ClientWorker.ViewModel
         public List<HDDInformation> HDDInformation { get; set; }
         public InformationSent(string nomemaquina, string versaonet, string versaowindows, string antivirus, string firewall, string ip, List<HDDInformation> hDDInformation)
         {
-            this.NomeMaquina = nomemaquina;
-            this.VersaoNet = versaonet;
-            this.VersaoWindows = versaowindows;
-            this.IP = ip;
-            this.Antivirus = antivirus;
-            this.Firewall = firewall;
-            this.HDDInformation = hDDInformation;
-
+            NomeMaquina = nomemaquina;
+            VersaoNet = versaonet;
+            VersaoWindows = versaowindows;
+            IP = ip;
+            Antivirus = antivirus;
+            Firewall = firewall;
+            HDDInformation = hDDInformation;
         }
         public InformationSent()
         {

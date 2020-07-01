@@ -1,20 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Management;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.TeamFoundation.Common;
-using Microsoft.Win32;
-using NetFwTypeLib;
 using ClientWorker.Getters;
-using System.Net.Http;
-using System.Text;
 using ClientWorker.ViewModel;
+using ServiceStack.Text;
 
 namespace ClientWorker
 {
@@ -22,24 +15,25 @@ namespace ClientWorker
     {
         private readonly ILogger<Worker> _logger;
         
-        private UdpClient UdpClient;
+        private UdpClient UdpClient = new UdpClient(8888);
         private IPEndPoint endPoint;
         private InformationSent informationSent;
+        private string mensagem;
 
         public Worker(ILogger<Worker> logger)
         {
             _logger = logger;
         }
         public override Task StartAsync(CancellationToken cancellationToken)
-        {
-            
+        {            
             informationSent = InformationGetter.RetornaInformacoes();
+            mensagem = JsonSerializer.SerializeToString(informationSent);
             return base.StartAsync(cancellationToken);
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)
         {
-            //byte[] bytes = Encoding.UTF8.GetBytes(informationSent);
+            
             _logger.LogInformation("Serviço foi parado.");
             return base.StopAsync(cancellationToken);
         }
@@ -51,6 +45,7 @@ namespace ClientWorker
 
 
                 //ao iniciar, aplicação deve se registrar ao serviço web e informar a ela essas informações
+
                 //o service que busca o web app e manda informações do PC que está instalado
 
                 informationSent = InformationGetter.RetornaInformacoes();

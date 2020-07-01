@@ -159,14 +159,14 @@ namespace ClientWorker.Getters
             List<HDDInformation> hDDInformation = InformacaoDrivers();
             string nomeMaquina = "Nome da máquina: " + Environment.MachineName;
             string ip = "Não conectado";
-            string versaoNet = InformationGetter.GetNetVersion();
-            string versaoWindows = "Versão do Windows: " + InformationGetter.VersaoWindows();
-            string antivirus = "Nome do Antivírus: " + InformationGetter.NomeAntivirus();
-            string firewall = InformationGetter.InformacaoFirewall();
+            string versaoNet = GetNetVersion();
+            string versaoWindows = "Versão do Windows: " + VersaoWindows();
+            string antivirus = "Nome do Antivírus: " + NomeAntivirus();
+            string firewall = InformacaoFirewall();
             bool conectado = System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
             if (conectado)
             {
-                ip = "Endereço de IP: " + InformationGetter.GetLocalIPAddress();
+                ip = "Endereço de IP: " + GetLocalIPAddress();
             }
             InformationSent informationSent = new InformationSent(nomeMaquina, versaoNet, versaoWindows, antivirus, firewall, ip, hDDInformation);
             return informationSent;
