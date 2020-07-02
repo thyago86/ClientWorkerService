@@ -58,7 +58,7 @@ namespace ClientWorker
             if (!string.IsNullOrEmpty(ClientRequest))
                 return false;
             Server.Send(ResponseData, ResponseData.Length, ClientEp);
-            //Server.Close();
+            Server.Close();
             return true;
         }
 
@@ -70,7 +70,7 @@ namespace ClientWorker
             try
             {               
 
-                Int32 port = 8887;
+                Int32 port = 8000;
                 IPAddress localAddr = IPAddress.Parse(localIP);
                 
 

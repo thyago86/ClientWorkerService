@@ -35,7 +35,7 @@ namespace WebApp
             {
                 if(string.IsNullOrEmpty(clientIP))
                     return;
-                TcpClient client = new TcpClient(clientIP, 8887);
+                TcpClient client = new TcpClient(clientIP, 8000);
                 Byte[] data = Encoding.ASCII.GetBytes(comando);
                 NetworkStream stream = client.GetStream();
                 stream.Write(data, 0, data.Length);
