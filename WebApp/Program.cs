@@ -14,11 +14,10 @@ namespace WebApp
             System.Threading.Thread.Sleep(2000);
             Console.WriteLine("Iniciando Terminal");            
             var Client = new UdpClient();
-            WorkerManager.ConectarAoWorker(Client);
+            var ip = WorkerManager.ConectarAoWorker(Client);
             Console.WriteLine("Insira seu comando");            
-            var comando = Console.ReadLine();
-            var comandoEnviado = Encoding.UTF8.GetBytes(comando);
-            WorkerManager.EnviarComando(Client, comandoEnviado);
+            var comando = Console.ReadLine();             
+            WorkerManager.EnviarComando(ip, comando);
         }
 
         
